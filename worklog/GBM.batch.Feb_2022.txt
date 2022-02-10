@@ -1,1 +1,57 @@
+cd /diskmnt/Projects/Users/ysong/Projects/Datasets/CPTAC3.catalog/
 
+wget https://raw.githubusercontent.com/ding-lab/CPTAC3.catalog/master/CPTAC3.Catalog.dat
+wget https://raw.githubusercontent.com/ding-lab/CPTAC3.catalog/master/BamMap/katmai.BamMap.dat
+
+# Activate environment
+source /diskmnt/Projects/Users/ysong/program/anaconda3/etc/profile.d/conda.sh
+
+conda activate methyl-pipeline
+
+cd /diskmnt/Projects/Users/ysong/projects/
+
+# Read in arguments
+Path=$1
+Batch_name=$2
+Sample=$3
+
+cd $Path
+
+## Make input
+python $cptac_methyl/make_pipeline_input.py ${Path} ${Batch_name} ${Sample}
+
+## Softlink IDAT files
+## Softlink IDAT files
+# for i in `cat /diskmnt/Projects/Users/ysong/Projects/Datasets/CPTAC3.catalog/katmai.BamMap.dat ${Sample}| grep Methylation | awk -F "\t" '{OFS="\t"; print $6}'`; do ln -s $i ${Path}; done
+## Pipeline
+Rscript $cptac_methyl/cptac_methylation_v1.1.R ${Path} |& tee tmux.methylation.log
+
+Rscript $cptac_methyl/cptac_methylation_liftover.R ${Path}/Processed |& tee tmux.mapping.log
+
+
+{Sample}
+C3L-01232.MethArray.Green.T	C3L-01232	GBM	21235a2e-482a-4aad-abef-4875ab0ca191
+C3L-01232.MethArray.Red.T	C3L-01232	GBM	a2af8f4d-3709-46c3-819d-fc09ea4efe0e
+C3L-02644.MethArray.Green.T	C3L-02644	GBM	6d87bace-c3c9-4958-9143-6a34d0362044
+C3L-02644.MethArray.Red.T	C3L-02644	GBM	dcf2f0e2-ff58-406c-97e3-d757907bcd11
+C3L-02662.MethArray.Green.T	C3L-02662	GBM	82c8ca56-2684-4765-a578-2e7bf88e7092
+C3L-02662.MethArray.Red.T	C3L-02662	GBM	a2a1c65f-dfd5-4e80-b324-e61a9246ef79
+C3L-03372.MethArray.Green.T	C3L-03372	GBM	e714040a-6402-4235-8292-63a0077c85c2
+C3L-03372.MethArray.Red.T	C3L-03372	GBM	17e7d89a-fd06-4bbb-a052-1c0b3e40daa6
+C3L-03385.MethArray.Green.T	C3L-03385	GBM	c5ef413a-9205-4a5a-a7ab-f2f44ee7ee5c
+C3L-03385.MethArray.Red.T	C3L-03385	GBM	7bd922bd-4827-46be-b430-59a771ae6168
+
+New sample format {Sample}
+# sample_name	unique_sample_id	case_id	disease	experimental_strategy	sample_type	data_path	UUID	filesize	data_format
+C1230738.MethArray.Green.T.ADNA_eb44394c	C1230738-TP	C1230738	GBM	Methylation Array	tumor	/diskmnt/Projects/cptac/GDC_import/data/6a93a1a5-d1e4-44fd-911f-e0ec24aba2f7/205707890073_R01C01_Grn.idat	6a93a1a5-d1e4-44fd-911f-e0ec24aba2f7	13677900	IDAT
+C1230738.MethArray.Red.T.ADNA_eb44394c	C1230738-TP	C1230738	GBM	Methylation Array	tumor	/diskmnt/Projects/cptac/GDC_import/data/ac35ebec-0748-4db0-a74d-1fecfae94bef/205707890073_R01C01_Red.idat	ac35ebec-0748-4db0-a74d-1fecfae94bef	13677900	IDAT
+
+{Input_batch_SampleSheet.csv}
+Sentrix_ID,Sentrix_Position,Sample_ID,Subject_ID,Tumor_Type,Sample_type
+204367490030,R06C01,CPT0239440006,C3L-01232,GBM,tumor
+204367490093,R02C01,CPT0227810007,C3L-02644,GBM,tumor
+204367470124,R01C01,CPT0267260007,C3L-02662,GBM,tumor
+204367490151,R06C01,CPT0275960006,C3L-03372,GBM,tumor
+204367490084,R06C01,CPT0239860006,C3L-03385,GBM,tumor
+204930630107,R08C01,CPT0388870006,C3L-03733,GBM,tumor
+204372030139,R02C01,CPT0264120006,C3L-03735,GBM,tumor
