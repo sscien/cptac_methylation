@@ -85,3 +85,10 @@ Error in read.metharray(basenames = files, extended = extended, verbose = verbos
   You can force this by 'force=TRUE', see the man page ?read.metharray
 Calls: read.metharray.exp -> read.metharray
 Execution halted
+
+
+cp -r /diskmnt/Projects/Users/ysong/project/methylation/batchFeb22 /diskmnt/Projects/cptac_scratch/CPTAC3_analysis/Methylation_hg38
+
+Hi @Ilya Strunilin @Clara Liu Check out the methylation result here, README will be provided later. Please let me know if you have any concerns.
+hg19 /diskmnt/Projects/cptac_scratch/CPTAC3_analysis/Methylation_hg38/batchFeb22/Processed/
+hg38 /diskmnt/Projects/cptac_scratch/CPTAC3_analysis/Methylation_hg38/batchFeb22/Processed/Processed_hg38_remap/
