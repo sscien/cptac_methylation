@@ -76,3 +76,12 @@ Sentrix_ID	Sentrix_Position	Sample_ID	Subject_ID	Tumor_Type	Sample_type
 2.06E+11	R02C01	C204057-TR1	C204057	GBM	recurrent_tumor
 2.06E+11	R02C01	C207624-TP	C207624	GBM	tumor
 2.06E+11	R02C01	C207624-TP	C207624	GBM	tumor
+
+
+[read.metharray.sheet] Found the following CSV files:
+[1] "/diskmnt/Projects/Users/ysong/project/methylation/batchFeb22/Input_batchFeb22_SampleSheet.csv"
+Error in read.metharray(basenames = files, extended = extended, verbose = verbose,  :
+  [read.metharray] Trying to parse IDAT files with different array size but seemingly all of the same type.
+  You can force this by 'force=TRUE', see the man page ?read.metharray
+Calls: read.metharray.exp -> read.metharray
+Execution halted
