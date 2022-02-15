@@ -20,6 +20,8 @@ cd $Path
 ## Make input
 python $cptac_methyl/make_pipeline_input.py ${Path} ${Batch_name} ${Sample}
 
+python $cptac_methyl/make_pipleline_input_v1.2.py /diskmnt/Projects/Users/ysong/project/methylation/batchFeb22 batchFeb22 /Projects/Users/ysong/project/methylation/batchFeb22/2022-01-24-confirm_methylation_file_map.tsv
+
 ## Softlink IDAT files
 ## Softlink IDAT files
 # for i in `cat /diskmnt/Projects/Users/ysong/Projects/Datasets/CPTAC3.catalog/katmai.BamMap.dat ${Sample}| grep Methylation | awk -F "\t" '{OFS="\t"; print $6}'`; do ln -s $i ${Path}; done
@@ -27,6 +29,8 @@ python $cptac_methyl/make_pipeline_input.py ${Path} ${Batch_name} ${Sample}
 Rscript $cptac_methyl/cptac_methylation_v1.1.R ${Path} |& tee tmux.methylation.log
 
 Rscript $cptac_methyl/cptac_methylation_liftover.R ${Path}/Processed |& tee tmux.mapping.log
+
+bash methylation_v1.2.bash /diskmnt/Projects/Users/ysong/project/methylation/batchFeb22
 
 
 {Sample}
@@ -55,3 +59,20 @@ Sentrix_ID,Sentrix_Position,Sample_ID,Subject_ID,Tumor_Type,Sample_type
 204367490084,R06C01,CPT0239860006,C3L-03385,GBM,tumor
 204930630107,R08C01,CPT0388870006,C3L-03733,GBM,tumor
 204372030139,R02C01,CPT0264120006,C3L-03735,GBM,tumor
+
+
+Sentrix_ID	Sentrix_Position	Sample_ID	Subject_ID	Tumor_Type	Sample_type
+2.06E+11	R01C01	C1230738-TP	C1230738	GBM	tumor
+2.06E+11	R01C01	C1230738-TP	C1230738	GBM	tumor
+2.06E+11	R01C01	C1230738-TR1	C1230738	GBM	recurrent_tumor
+2.06E+11	R01C01	C1230738-TR1	C1230738	GBM	recurrent_tumor
+2.06E+11	R02C01	C1245129-TP	C1245129	GBM	tumor
+2.06E+11	R02C01	C1245129-TP	C1245129	GBM	tumor
+2.06E+11	R01C01	C1245129-TR1	C1245129	GBM	recurrent_tumor
+2.06E+11	R01C01	C1245129-TR1	C1245129	GBM	recurrent_tumor
+2.06E+11	R07C01	C204057-TP	C204057	GBM	tumor
+2.06E+11	R07C01	C204057-TP	C204057	GBM	tumor
+2.06E+11	R02C01	C204057-TR1	C204057	GBM	recurrent_tumor
+2.06E+11	R02C01	C204057-TR1	C204057	GBM	recurrent_tumor
+2.06E+11	R02C01	C207624-TP	C207624	GBM	tumor
+2.06E+11	R02C01	C207624-TP	C207624	GBM	tumor
