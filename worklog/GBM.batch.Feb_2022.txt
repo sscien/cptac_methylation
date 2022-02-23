@@ -92,3 +92,11 @@ cp -r /diskmnt/Projects/Users/ysong/project/methylation/batchFeb22 /diskmnt/Proj
 Hi @Ilya Strunilin @Clara Liu Check out the methylation result here, README will be provided later. Please let me know if you have any concerns.
 hg19 /diskmnt/Projects/cptac_scratch/CPTAC3_analysis/Methylation_hg38/batchFeb22/Processed/
 hg38 /diskmnt/Projects/cptac_scratch/CPTAC3_analysis/Methylation_hg38/batchFeb22/Processed/Processed_hg38_remap/
+
+
+solution:
+
+force this by 'force=TRUE'
+
+bash methylation_v1.2.bash /diskmnt/Projects/Users/ysong/project/methylation/batchFeb22
+(methyl-pipeline) [ysong@yellowstone batchFeb22]$ cp -r /diskmnt/Projects/Users/ysong/project/methylation/batchFeb22 /diskmnt/Projects/cptac_scratch/CPTAC3_analysis/Methylation_hg38
