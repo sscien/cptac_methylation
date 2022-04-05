@@ -26,6 +26,11 @@ python $cptac_methyl/make_pipeline_input.py ${Path} ${Batch_name} ${Sample}
 
 python /diskmnt/Projects/Users/ysong/Projects/cptac_methylation/make_pipeline_input_v1.3.py /diskmnt/Projects/Users/ysong/project/methylation/batch0318_22/ batch0318_22 /diskmnt/Projects/Users/ysong/project/methylation/batch0318_22/Methylation_Array.analysis_SN.dat
 
+#### Analysis description
+cp /diskmnt/Projects/Users/wliang/CPTAC_Pancan_Methylation/09_Pipeline/20211019_batch_1021/Processed_hg38_remap/cptac_methylation_analysis.txt /diskmnt/Projects/Users/ysong/project/methylation/batch0318_22/Processed/Processed_hg38_remap
+
+cp -r /diskmnt/Projects/Users/wliang/CPTAC_Pancan_Methylation/00_Scripts /diskmnt/Projects/Users/ysong/project/jupyter_lab/Methylation
+
 ## Softlink IDAT files
 ## Softlink IDAT files
 # for i in `cat /diskmnt/Projects/Users/ysong/Projects/Datasets/CPTAC3.catalog/katmai.BamMap.dat ${Sample}| grep Methylation | awk -F "\t" '{OFS="\t"; print $6}'`; do ln -s $i ${Path}; done
