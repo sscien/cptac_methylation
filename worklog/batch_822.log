@@ -1,0 +1,289 @@
+cd /diskmnt/Projects/Users/ysong/Projects/Datasets/CPTAC3.catalog/
+rm CPTAC3.Catalog.dat
+rm katmai.BamMap.dat
+
+wget https://raw.githubusercontent.com/ding-lab/CPTAC3.catalog/master/CPTAC3.Catalog.dat
+wget https://raw.githubusercontent.com/ding-lab/CPTAC3.catalog/master/BamMap/katmai.BamMap.dat
+
+# Activate environment
+source /diskmnt/Projects/Users/ysong/program/anaconda3/etc/profile.d/conda.sh
+
+conda activate methyl-pipeline
+
+cd /diskmnt/Projects/Users/ysong/projects/
+
+# Read in arguments
+Path=$1
+Batch_name=$2
+Sample=$3
+
+cd $Path
+
+## Make input
+python $cptac_methyl/make_pipeline_input.py ${Path} ${Batch_name} ${Sample}
+
+#python $cptac_methyl/make_pipleline_input_v1.3.py /diskmnt/Projects/Users/ysong/project/methylation/batch0318_22 batch0318_22 /diskmnt/Projects/Users/ysong/project/methylation/batch0318_22/Methylation_Array.analysis_SN.dat
+
+python /diskmnt/Projects/Users/ysong/Projects/cptac_methylation/make_pipeline_input_v1.3.py /diskmnt/Projects/Users/ysong/project/methylation/batch0318_22/ batch0318_22 /diskmnt/Projects/Users/ysong/project/methylation/batch0318_22/Methylation_Array.analysis_SN.dat
+
+#### Analysis description
+cp /diskmnt/Projects/Users/wliang/CPTAC_Pancan_Methylation/09_Pipeline/20211019_batch_1021/Processed_hg38_remap/cptac_methylation_analysis.txt /diskmnt/Projects/Users/ysong/project/methylation/batch0318_22/Processed/Processed_hg38_remap
+
+cp -r /diskmnt/Projects/Users/wliang/CPTAC_Pancan_Methylation/00_Scripts /diskmnt/Projects/Users/ysong/project/jupyter_lab/Methylation
+
+## Softlink IDAT files
+## Softlink IDAT files
+# for i in `cat /diskmnt/Projects/Users/ysong/Projects/Datasets/CPTAC3.catalog/katmai.BamMap.dat ${Sample}| grep Methylation | awk -F "\t" '{OFS="\t"; print $6}'`; do ln -s $i ${Path}; done
+## Pipeline
+Rscript $cptac_methyl/cptac_methylation_v1.1.R ${Path} |& tee tmux.methylation.log
+
+Rscript $cptac_methyl/cptac_methylation_liftover.R ${Path}/Processed |& tee tmux.mapping.log
+
+bash methylation_v1.2.bash /diskmnt/Projects/Users/ysong/project/methylation/batchFeb22
+
+
+{Sample}
+C3L-01232.MethArray.Green.T	C3L-01232	GBM	21235a2e-482a-4aad-abef-4875ab0ca191
+C3L-01232.MethArray.Red.T	C3L-01232	GBM	a2af8f4d-3709-46c3-819d-fc09ea4efe0e
+C3L-02644.MethArray.Green.T	C3L-02644	GBM	6d87bace-c3c9-4958-9143-6a34d0362044
+C3L-02644.MethArray.Red.T	C3L-02644	GBM	dcf2f0e2-ff58-406c-97e3-d757907bcd11
+C3L-02662.MethArray.Green.T	C3L-02662	GBM	82c8ca56-2684-4765-a578-2e7bf88e7092
+C3L-02662.MethArray.Red.T	C3L-02662	GBM	a2a1c65f-dfd5-4e80-b324-e61a9246ef79
+C3L-03372.MethArray.Green.T	C3L-03372	GBM	e714040a-6402-4235-8292-63a0077c85c2
+C3L-03372.MethArray.Red.T	C3L-03372	GBM	17e7d89a-fd06-4bbb-a052-1c0b3e40daa6
+C3L-03385.MethArray.Green.T	C3L-03385	GBM	c5ef413a-9205-4a5a-a7ab-f2f44ee7ee5c
+C3L-03385.MethArray.Red.T	C3L-03385	GBM	7bd922bd-4827-46be-b430-59a771ae6168
+
+New sample format {Sample}
+# sample_name	unique_sample_id	case_id	disease	experimental_strategy	sample_type	data_path	UUID	filesize	data_format
+C1230738.MethArray.Green.T.ADNA_eb44394c	C1230738-TP	C1230738	GBM	Methylation Array	tumor	/diskmnt/Projects/cptac/GDC_import/data/6a93a1a5-d1e4-44fd-911f-e0ec24aba2f7/205707890073_R01C01_Grn.idat	6a93a1a5-d1e4-44fd-911f-e0ec24aba2f7	13677900	IDAT
+C1230738.MethArray.Red.T.ADNA_eb44394c	C1230738-TP	C1230738	GBM	Methylation Array	tumor	/diskmnt/Projects/cptac/GDC_import/data/ac35ebec-0748-4db0-a74d-1fecfae94bef/205707890073_R01C01_Red.idat	ac35ebec-0748-4db0-a74d-1fecfae94bef	13677900	IDAT
+
+{Input_batch_SampleSheet.csv}
+Sentrix_ID,Sentrix_Position,Sample_ID,Subject_ID,Tumor_Type,Sample_type
+204367490030,R06C01,CPT0239440006,C3L-01232,GBM,tumor
+204367490093,R02C01,CPT0227810007,C3L-02644,GBM,tumor
+204367470124,R01C01,CPT0267260007,C3L-02662,GBM,tumor
+204367490151,R06C01,CPT0275960006,C3L-03372,GBM,tumor
+204367490084,R06C01,CPT0239860006,C3L-03385,GBM,tumor
+204930630107,R08C01,CPT0388870006,C3L-03733,GBM,tumor
+204372030139,R02C01,CPT0264120006,C3L-03735,GBM,tumor
+
+
+Sentrix_ID	Sentrix_Position	Sample_ID	Subject_ID	Tumor_Type	Sample_type
+2.06E+11	R01C01	C1230738-TP	C1230738	GBM	tumor
+2.06E+11	R01C01	C1230738-TP	C1230738	GBM	tumor
+2.06E+11	R01C01	C1230738-TR1	C1230738	GBM	recurrent_tumor
+2.06E+11	R01C01	C1230738-TR1	C1230738	GBM	recurrent_tumor
+2.06E+11	R02C01	C1245129-TP	C1245129	GBM	tumor
+2.06E+11	R02C01	C1245129-TP	C1245129	GBM	tumor
+2.06E+11	R01C01	C1245129-TR1	C1245129	GBM	recurrent_tumor
+2.06E+11	R01C01	C1245129-TR1	C1245129	GBM	recurrent_tumor
+2.06E+11	R07C01	C204057-TP	C204057	GBM	tumor
+2.06E+11	R07C01	C204057-TP	C204057	GBM	tumor
+2.06E+11	R02C01	C204057-TR1	C204057	GBM	recurrent_tumor
+2.06E+11	R02C01	C204057-TR1	C204057	GBM	recurrent_tumor
+2.06E+11	R02C01	C207624-TP	C207624	GBM	tumor
+2.06E+11	R02C01	C207624-TP	C207624	GBM	tumor
+
+
+[read.metharray.sheet] Found the following CSV files:
+[1] "/diskmnt/Projects/Users/ysong/project/methylation/batchFeb22/Input_batchFeb22_SampleSheet.csv"
+Error in read.metharray(basenames = files, extended = extended, verbose = verbose,  :
+  [read.metharray] Trying to parse IDAT files with different array size but seemingly all of the same type.
+  You can force this by 'force=TRUE', see the man page ?read.metharray
+Calls: read.metharray.exp -> read.metharray
+Execution halted
+
+
+cp -r /diskmnt/Projects/Users/ysong/project/methylation/batchFeb22 /diskmnt/Projects/cptac_scratch/CPTAC3_analysis/Methylation_hg38
+
+Hi @Ilya Strunilin @Clara Liu Check out the methylation result here, README will be provided later. Please let me know if you have any concerns.
+hg19 /diskmnt/Projects/cptac_scratch/CPTAC3_analysis/Methylation_hg38/batchFeb22/Processed/
+hg38 /diskmnt/Projects/cptac_scratch/CPTAC3_analysis/Methylation_hg38/batchFeb22/Processed/Processed_hg38_remap/
+
+
+solution:
+
+force this by 'force=TRUE'
+
+bash methylation_v1.2.bash /diskmnt/Projects/Users/ysong/project/methylation/batchFeb22
+(methyl-pipeline) [ysong@yellowstone batchFeb22]$ cp -r /diskmnt/Projects/Users/ysong/project/methylation/batchFeb22 /diskmnt/Projects/cptac_scratch/CPTAC3_analysis/Methylation_hg38
+
+
+(methyl-pipeline) [ysong@zion batch0318_22]$ bash batch_run.sh /diskmnt/Projects/Users/ysong/project/methylation/batch0318_22 batch0318_22 /diskmnt/Projects/Users/ysong/project/methylation/batch0318_22/Methylation_Array.analysis_SN.dat
+bash: batch_run.sh: No such file or directory
+(methyl-pipeline) [ysong@zion batch0318_22]$ bash /diskmnt/Projects/Users/ysong/Projects/cptac_methylation/batch_run.sh /diskmnt/Projects/Users/ysong/project/methylation/batch0318_22 batch0318_22 /diskmnt/Projects/Users/ysong/project/methylation/batch0318_22/Methylation_Array.analysis_SN.dat
+--2022-04-04 22:49:00--  https://raw.githubusercontent.com/ding-lab/CPTAC3.catalog/master/CPTAC3.Catalog.dat
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.109.133, 185.199.110.133, 185.199.111.133, ...
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.109.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 10045368 (9.6M) [text/plain]
+Saving to: ‘CPTAC3.Catalog.dat’
+
+CPTAC3.Catalog.dat                                  100%[===================================================================================================================>]   9.58M  --.-KB/s    in 0.09s
+
+2022-04-04 22:49:01 (109 MB/s) - ‘CPTAC3.Catalog.dat’ saved [10045368/10045368]
+
+--2022-04-04 22:49:01--  https://raw.githubusercontent.com/ding-lab/CPTAC3.catalog/master/BamMap/katmai.BamMap.dat
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.110.133, 185.199.111.133, 185.199.108.133, ...
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.110.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 2468826 (2.4M) [text/plain]
+Saving to: ‘katmai.BamMap.dat’
+
+katmai.BamMap.dat                                   100%[===================================================================================================================>]   2.35M  --.-KB/s    in 0.02s
+
+2022-04-04 22:49:01 (99.7 MB/s) - ‘katmai.BamMap.dat’ saved [2468826/2468826]
+
+/diskmnt/Projects/Users/ysong/Projects/cptac_methylation/batch_run.sh: line 15: cd: /diskmnt/Projects/Users/ysong/projects/: No such file or directory
+                       # sample_name       case disease experimental_strategy  short_sample_type  ... reference                                 sample_type     sample_id sample_metadata aliquot_annotation
+3347   C3L-00617.MethArray.Green.Tbm  C3L-00617     AML     Methylation Array  tumor_bone_marrow  ...       NaN  Primary Blood Derived Cancer - Bone Marrow  C3L-00617-60             NaN                NaN
+3348     C3L-00617.MethArray.Red.Tbm  C3L-00617     AML     Methylation Array  tumor_bone_marrow  ...       NaN  Primary Blood Derived Cancer - Bone Marrow  C3L-00617-60             NaN                NaN
+5971   C3L-01187.MethArray.Green.Tbm  C3L-01187     AML     Methylation Array  tumor_bone_marrow  ...       NaN  Primary Blood Derived Cancer - Bone Marrow  C3L-01187-54             NaN                NaN
+5972     C3L-01187.MethArray.Red.Tbm  C3L-01187     AML     Methylation Array  tumor_bone_marrow  ...       NaN  Primary Blood Derived Cancer - Bone Marrow  C3L-01187-54             NaN                NaN
+5983   C3L-01188.MethArray.Green.Tbm  C3L-01188     AML     Methylation Array  tumor_bone_marrow  ...       NaN  Primary Blood Derived Cancer - Bone Marrow  C3L-01188-54             NaN                NaN
+...                              ...        ...     ...                   ...                ...  ...       ...                                         ...           ...             ...                ...
+22126    C3N-00660.MethArray.Red.Tbm  C3N-00660     AML     Methylation Array  tumor_bone_marrow  ...       NaN  Primary Blood Derived Cancer - Bone Marrow  C3N-00660-54             NaN                NaN
+22205  C3N-00681.MethArray.Green.Tbm  C3N-00681     AML     Methylation Array  tumor_bone_marrow  ...       NaN  Primary Blood Derived Cancer - Bone Marrow  C3N-00681-54             NaN                NaN
+22206    C3N-00681.MethArray.Red.Tbm  C3N-00681     AML     Methylation Array  tumor_bone_marrow  ...       NaN  Primary Blood Derived Cancer - Bone Marrow  C3N-00681-54             NaN                NaN
+22213  C3N-00682.MethArray.Green.Tbm  C3N-00682     AML     Methylation Array  tumor_bone_marrow  ...       NaN  Primary Blood Derived Cancer - Bone Marrow  C3N-00682-54             NaN                NaN
+22214    C3N-00682.MethArray.Red.Tbm  C3N-00682     AML     Methylation Array  tumor_bone_marrow  ...       NaN  Primary Blood Derived Cancer - Bone Marrow  C3N-00682-54             NaN                NaN
+
+[144 rows x 17 columns]
+                      # sample_name       case disease experimental_strategy        sample_type  ...  filesize  data_format reference                                  UUID  system
+897   C3L-00617.MethArray.Green.Tbm  C3L-00617     AML     Methylation Array  tumor_bone_marrow  ...  13677965         IDAT       NaN  ec2153a6-4b78-43f3-86d0-14c6c964a51a  katmai
+898     C3L-00617.MethArray.Red.Tbm  C3L-00617     AML     Methylation Array  tumor_bone_marrow  ...  13677965         IDAT       NaN  ac763702-5267-414c-aaa0-5c917bc1f409  katmai
+1585  C3L-01187.MethArray.Green.Tbm  C3L-01187     AML     Methylation Array  tumor_bone_marrow  ...  13677955         IDAT       NaN  c2e662b9-310e-4962-aa84-1ec287040472  katmai
+1586    C3L-01187.MethArray.Red.Tbm  C3L-01187     AML     Methylation Array  tumor_bone_marrow  ...  13677955         IDAT       NaN  e3428ba2-22b9-4a68-9dba-3f948a7b2c24  katmai
+1590  C3L-01188.MethArray.Green.Tbm  C3L-01188     AML     Methylation Array  tumor_bone_marrow  ...  13677955         IDAT       NaN  a627a14e-bb18-49a0-bb48-0da69eb679f3  katmai
+...                             ...        ...     ...                   ...                ...  ...       ...          ...       ...                                   ...     ...
+5376    C3N-00660.MethArray.Red.Tbm  C3N-00660     AML     Methylation Array  tumor_bone_marrow  ...  13677955         IDAT       NaN  ccf6cf73-7065-4baf-a920-67ab8ab3e998  katmai
+5409  C3N-00681.MethArray.Green.Tbm  C3N-00681     AML     Methylation Array  tumor_bone_marrow  ...  13677955         IDAT       NaN  116cb0d6-b2ce-4e1f-8e56-954cc004ac53  katmai
+5410    C3N-00681.MethArray.Red.Tbm  C3N-00681     AML     Methylation Array  tumor_bone_marrow  ...  13677955         IDAT       NaN  737bed73-8d50-45f2-8308-bbf5017f80ef  katmai
+5413  C3N-00682.MethArray.Green.Tbm  C3N-00682     AML     Methylation Array  tumor_bone_marrow  ...  13677955         IDAT       NaN  2ecf1006-16b6-4641-b03b-62a471be4d7d  katmai
+5414    C3N-00682.MethArray.Red.Tbm  C3N-00682     AML     Methylation Array  tumor_bone_marrow  ...  13677955         IDAT       NaN  31f361a4-a019-43a6-b791-72db9f5e6a96  katmai
+
+[144 rows x 11 columns]
+897     /diskmnt/Projects/cptac/GDC_import/data/ec2153...
+898     /diskmnt/Projects/cptac/GDC_import/data/ac7637...
+1585    /diskmnt/Projects/cptac/GDC_import/data/c2e662...
+1586    /diskmnt/Projects/cptac/GDC_import/data/e3428b...
+1590    /diskmnt/Projects/cptac/GDC_import/data/a627a1...
+                              ...
+5376    /diskmnt/Projects/cptac/GDC_import/data/ccf6cf...
+5409    /diskmnt/Projects/cptac/GDC_import/data/116cb0...
+5410    /diskmnt/Projects/cptac/GDC_import/data/737bed...
+5413    /diskmnt/Projects/cptac/GDC_import/data/2ecf10...
+5414    /diskmnt/Projects/cptac/GDC_import/data/31f361...
+Name: data_path, Length: 144, dtype: object
+Traceback (most recent call last):
+  File "/diskmnt/Projects/Users/ysong/Projects/cptac_methylation/make_pipeline_input_v1.3.py", line 45, in <module>
+    os.symlink(src, os.path.join(dst, os.path.basename(src)))
+FileExistsError: [Errno 17] File exists: '/diskmnt/Projects/cptac/GDC_import/data/ec2153a6-4b78-43f3-86d0-14c6c964a51a/205555390174_R08C01_Grn.idat' -> '/diskmnt/Projects/Users/ysong/project/methylation/batch0318_22/205555390174_R08C01_Grn.idat'
+Loading required package: BiocGenerics
+Loading required package: parallel
+
+Attaching package: ‘BiocGenerics’
+
+The following objects are masked from ‘package:parallel’:
+
+    clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
+    clusterExport, clusterMap, parApply, parCapply, parLapply,
+    parLapplyLB, parRapply, parSapply, parSapplyLB
+
+The following object is masked from ‘package:limma’:
+
+    plotMA
+
+The following objects are masked from ‘package:stats’:
+
+    IQR, mad, sd, var, xtabs
+
+The following objects are masked from ‘package:base’:
+
+    anyDuplicated, append, as.data.frame, basename, cbind, colMeans,
+    colnames, colSums, dirname, do.call, duplicated, eval, evalq,
+    Filter, Find, get, grep, grepl, intersect, is.unsorted, lapply,
+    lengths, Map, mapply, match, mget, order, paste, pmax, pmax.int,
+    pmin, pmin.int, Position, rank, rbind, Reduce, rowMeans, rownames,
+    rowSums, sapply, setdiff, sort, table, tapply, union, unique,
+    unsplit, which, which.max, which.min
+
+Loading required package: GenomicRanges
+Loading required package: stats4
+Loading required package: S4Vectors
+
+Attaching package: ‘S4Vectors’
+
+The following object is masked from ‘package:base’:
+
+    expand.grid
+
+Loading required package: IRanges
+Loading required package: GenomeInfoDb
+Loading required package: SummarizedExperiment
+Loading required package: Biobase
+Welcome to Bioconductor
+
+    Vignettes contain introductory material; view with
+    'browseVignettes()'. To cite Bioconductor, see
+    'citation("Biobase")', and for packages 'citation("pkgname")'.
+
+Loading required package: DelayedArray
+Loading required package: matrixStats
+
+Attaching package: ‘matrixStats’
+
+The following objects are masked from ‘package:Biobase’:
+
+    anyMissing, rowMedians
+
+Loading required package: BiocParallel
+
+Attaching package: ‘DelayedArray’
+
+The following objects are masked from ‘package:matrixStats’:
+
+    colMaxs, colMins, colRanges, rowMaxs, rowMins, rowRanges
+
+The following objects are masked from ‘package:base’:
+
+    aperm, apply
+
+Loading required package: Biostrings
+Loading required package: XVector
+
+Attaching package: ‘Biostrings’
+
+The following object is masked from ‘package:DelayedArray’:
+
+    type
+
+The following object is masked from ‘package:base’:
+
+    strsplit
+
+Loading required package: bumphunter
+Loading required package: foreach
+Loading required package: iterators
+Loading required package: locfit
+locfit 1.5-9.1   2013-03-22
+Setting options('download.file.method.GEOquery'='auto')
+Setting options('GEOquery.inmemory.gpl'=FALSE)
+
+
+Loading required package: grid
+Loading required package: DSS
+Loading required package: bsseq
+
+Attaching package: 'bsseq'
+
+The following object is masked from 'package:minfi':
+
+    getMeth
+
+Loading required package: splines
+Loading required package: DMRcatedata
+[read.metharray.sheet] Found the following CSV files:
+[1] "/diskmnt/Projects/Users/ysong/project/methylation/batch0318_22/Input_batch0318_22_SampleSheet.csv"
