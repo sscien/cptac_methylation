@@ -1,4 +1,4 @@
-bash batch_run.sh /diskmnt/Projects/Users/ysong/project/methylation/batch0318_22 batch0318_22 /diskmnt/Projects/Users/ysong/project/methylation/batch0318_22/Methylation_Array.analysis_SN.dat
+bash /diskmnt/Projects/Users/ysong/Projects/cptac_methylation/batch_run.sh /diskmnt/Projects/Users/ysong/project/methylation/batch0318_22 batch0318_22 /diskmnt/Projects/Users/ysong/project/methylation/batch0318_22/Methylation_Array.analysis_SN.dat
 
 cd /diskmnt/Projects/Users/ysong/Projects/Datasets/CPTAC3.catalog/
 rm CPTAC3.Catalog.dat
