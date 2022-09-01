@@ -1,0 +1,63 @@
+CPTAC3 Analysis Submission
+Provide details about completed CPTAC3 analyses
+ 
+songyizhe@gmail.com (not shared) Switch account
+ 
+* Required
+Your name
+*
+Yizhe Song
+Batch Name
+*
+batch_822
+Batch Notes
+Any additional batch details
+batch_822_Methylation
+Number of cases in batch
+*
+Provide count of cases associated with this submission
+116
+Were these cases run before?
+Yes, all are re-runs
+No, all are new runs
+Some but not all are re-runs
+
+Analysis description
+System
+*
+Where processing took place, e.g., MGI or katmai.
+katmai
+Analysis Pipeline
+*
+Please contact Matt if your pipeline is not listed
+Pipeline name
+*
+Name of software or pipeline used
+cptac_methylation
+Pipeline version
+*
+Example: v1.3
+v1.2
+Pipeline Github link
+https://github.com/ding-lab/cptac_methylation
+
+Analysis results
+We need an Analysis Summary file and a Processing Description file.
+
+Analysis summary file records details about data being uploaded.  Detailed description is here: https://docs.google.com/document/d/1Ho5cygpxd8sB_45nJ90d15DcdaGCiDqF0_jzIcc-9B4/edit?usp=sharing
+Analysis summary file path
+*
+Path to Analysis Summary file (explicit path, no URL)
+/diskmnt/Projects/cptac_scratch/CPTAC3_analysis/Methylation_hg38/batch_822/Processed/Processed_hg38_remap/AnalysisSummary.txt
+Processing Directory
+Path to principal work directory.  This is typically where scripts are and is usually different for each batch
+/diskmnt/Projects/cptac_scratch/CPTAC3_analysis/Methylation_hg38/batch_822/
+Output directory
+Provide path to output directory or directories
+/diskmnt/Projects/cptac_scratch/CPTAC3_analysis/Methylation_hg38/batch_822/Processed/Processed_hg38_remap/
+Processing description file
+*
+Path to file describing processing pipeline, which will be distributed along with data.  Describe the input data format, processing details, and output data.  This file should include details about any external data sources used in analysis, such as reference, database files, etc.  This must be a regular file in the filesystem (do not input URL)
+/diskmnt/Projects/cptac_scratch/CPTAC3_analysis/Methylation_hg38/batch_822/Processed/Processed_hg38_remap/cptac_methylation_analysis.txt
+Processing notes
+Any additional notes regarding processing, results, etc.
