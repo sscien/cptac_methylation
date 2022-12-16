@@ -15,6 +15,13 @@ conda activate methyl-pipeline
 
 bash /diskmnt/Projects/Users/ysong/Projects/cptac_methylation/methylation_v1.2.bash /diskmnt/Projects/Users/ysong/project/methylation/batch_1123/ batch_1123 /diskmnt/Projects/Users/ysong/project/cptac_analysis/batch_22_11_23/Methylation_Array.run_list.tsv
 
+## after the job was finished
+
+cp -r /diskmnt/Projects/Users/ysong/project/methylation/batch_1123/ /diskmnt/Projects/cptac_scratch/CPTAC3_analysis/Methylation_hg38
+
+## result folder
+
+/diskmnt/Projects/cptac_scratch/CPTAC3_analysis/Methylation_hg38/batch_1123/
 
 # Read in arguments
 Path=$1
@@ -48,7 +55,6 @@ Rscript $cptac_methyl/cptac_methylation_v1.1.R ${Path} |& tee tmux.methylation.l
 
 Rscript $cptac_methyl/cptac_methylation_liftover.R ${Path}/Processed |& tee tmux.mapping.log
 
-cp -r /diskmnt/Projects/Users/ysong/project/methylation/batchFeb22 /diskmnt/Projects/cptac_scratch/CPTAC3_analysis/Methylation_hg38
 
 Hi @Matt Check out the methylation result here, README will be provided later. Please let me know if you have any concerns.
 hg19 /diskmnt/Projects/cptac_scratch/CPTAC3_analysis/Methylation_hg38/batchFeb22/Processed/
